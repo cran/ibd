@@ -1,0 +1,13 @@
+c5d04c87b448cbee85c9171e5ae22d08 *DESCRIPTION
+b9fe8cb0be17426992c484d9c43da3f1 *NAMESPACE
+819872a239d8a1cc6a23326e8f9edb00 *R/ibd.R
+82de33212e7c8338e26e282789ee907a *man/A_eff.Rd
+df847ac79ceb81f22fef08318375718c *man/A_eff_tc.Rd
+5a095ad8485c898b6758e7f091f24c19 *man/Cmat.Rd
+c0ffd8fa595ca3f53d0a8f47ddf841e7 *man/D_eff.Rd
+507e3c51850ee1103e0fc8aff673afcf *man/NNPmat.Rd
+4a2edb0a54301d7b0973646d042f8aec *man/N_to_Design.Rd
+bc3a939efeba90a9ba4743e2a33ebcc3 *man/btib.Rd
+97200b782a0899e11c21ed75e256e296 *man/design_to_N.Rd
+9f762f17182525f81a045b665f5de458 *man/ibd.Rd
+ced80aebfd8b0e10059195410735965f *man/ibdtvc.Rd
