@@ -1,7 +1,7 @@
 \name{A_eff}
 \alias{A_eff}
 \title{A-efficiency of a binary incomplete block design}
-\description{This function computes A-efficiency of an incomplete block design. Incidence matrix of the design is to be supplied as input to the function.}
+\description{This function computes lower bound to A-efficiency of an incomplete block design. Incidence matrix of the design is to be supplied as input to the function.}
 \usage{A_eff(N)}
 \arguments{
 	\item{N}{incidence matrix}
@@ -10,14 +10,8 @@
 	\item{Aeff}{A-efficiency}
        }
 \examples{
-N=matrix(c(1	,	0	,	0	,	0	,	1	,	0	,	1	,
-0	,	0	,	0	,	1	,	0	,	1	,	1	,
-0	,	0	,	1	,	0	,	1	,	1	,	0	,
-1	,	0	,	1	,	1	,	0	,	0	,	0	,
-0	,	1	,	1	,	0	,	0	,	0	,	1	,
-1	,	1	,	0	,	0	,	0	,	1	,	0	,
-0	,	1	,	0	,	1	,	1	,	0	,	0	
-),nrow=7,byrow=TRUE)
+N=matrix(c(1,0,0,0,1,0,1,0,0,0,1,0,1,1,0,0,1,0,1,1,0,1,0,1,1,0,0,0,0,1,1,0,0,0,1,1,1,0,0,0,1,0,0,
+1,0,1,1,0,0),nrow=7,byrow=TRUE)
 A_eff(N)
 }
 \author{B N Mandal <mandal.stat@gmail.com>}

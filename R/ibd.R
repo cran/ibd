@@ -1,33 +1,21 @@
-#source("C:/Users/user/Desktop/ibd/R/ibd.txt")
-#####################################################################################################
-is.wholenumber=function(x, tol = .Machine$double.eps^0.5)  
-{
-	#Test for whole numbers
-	abs(x - round(x)) < tol
-}
-############stepwise ILP for constructing IBD with specified concurrence matrix######################
-###########Deciding concurrence matrix structure for given v,b,k  through linear programming##############
+is.wholenumber=function(x, tol = .Machine$double.eps^0.5)  abs(x - round(x)) < tol
 library(lpSolve)
 ccmat_LP=function(v,b,k)
 {
 	if (v<=k) stop ("v should be greater than k") 
 	r=floor(b*k/v)
-	#There are l1 treatments with replications r and l2 treatments with replications (r+1)
 	l1=v-(b*k-v*r)
 	l2=v-l1
 	lambda=floor(r*(k-1)/(v-1))
-	#The treatments which have r replications, they occur with n11 treatments lambda times and occur n12 treatments (lambda+1) times.		
 	n12=r*(k-1)-lambda*(v-1)
 	n11=v-1-n12
 	if (n11>=(k-1))
 	{
-		#The treatments which have (r+1) replications, they occur with n21 treatments lambda times and occur n22 treatments (lambda+1) times.		
 		n21=n11-k+1
 		n22=v+k-n11-2
 	} 
 	if (n11<(k-1))
 	{
-		#The treatments which have (r+1) replications, they occur with n21 treatments (lambda+1) times and occur n22 treatments (lambda+2) times.		
 		n21=v-k+n11
 		n22=k-1-n11
 	}
@@ -40,7 +28,6 @@ ccmat_LP=function(v,b,k)
 	}
 	obj=matrix(0,v,v)	
 	dim(obj)=c(1,v*v)
-	##constraint that sum of off-diagnonal elements of concurrence matrix= (k-1)*diagonal elements of conc matrix
 	constr1=NULL
 	for (i in 1:v) 
 	{
@@ -51,7 +38,6 @@ ccmat_LP=function(v,b,k)
 		dim(temp)=c(1,v*v)
 		constr1=rbind(constr1,temp)
 	}
-	##constraint that off-diagonal elements are symmetric
 	constr2=NULL
 	for (i in 1:(v-1))
 	{
@@ -65,12 +51,10 @@ ccmat_LP=function(v,b,k)
 			constr2=rbind(constr2,temp)
 		}	
 	}
-	##constraint that sum of all off-diagonal elements of concurrence matrix is bk(k-1)
 	constr3=matrix(1,v,v)
 	for (i in 1:v) constr3[i,i]=0
 	constr3=t(constr3)
 	dim(constr3)=c(1,v*v)
-	#constraint that replications are positive and specified as r or r+1
 	constr4=NULL
 	for (i in 1:v) 
 	{
@@ -79,7 +63,6 @@ ccmat_LP=function(v,b,k)
 		dim(temp)=c(1,v*v)
 		constr4=rbind(constr4,temp)
 	}	
-	#constraint that concurrences are greater than or equal to floor(r(k-1)/(v-1)) 	or +1
 	constr5=NULL
 	for (i in 1:(v-1))
 	{
@@ -92,9 +75,7 @@ ccmat_LP=function(v,b,k)
 			constr5=rbind(constr5,temp)
 		}	
 	}
-	#constraint that concurrences are less than or equal to floor(r(k-1)/(v-1)) +1  or 2	
 	constr51=constr5
-	#constraint that replications are greater than concurrences
 	constr6=NULL
 	for (i in 1:(v-1))
 	{
@@ -109,7 +90,6 @@ ccmat_LP=function(v,b,k)
 		}					
 	}	
 	constr=rbind(constr1,constr2,constr3,constr4,constr5,constr51)
-	##Directions
 	dir1=rep("=", times=(v))
 	dim(dir1)=c(v,1)	
 	dir2=rep("=",times=(v*(v-1)/2))	
@@ -124,7 +104,6 @@ ccmat_LP=function(v,b,k)
 	dir6=rep(">",times=(v*(v-1)/2))	
 	dim(dir6)=c(v*(v-1)/2,1)						
 	dir=rbind(dir1,dir2,dir3,dir4,dir5,dir51)	
-	##right hand side of the constraints
 	rhs1=matrix(0,v,1)
 	rhs2=matrix(0,v*(v-1)/2,1)
 	rhs3=b*k*(k-1)	
@@ -148,23 +127,20 @@ ccmat_LP=function(v,b,k)
 			{		
 				row=sol[[12]]
 				dim(row)=c(v,v)		
-			} else return(0) #0 implies no concurrence matrix with lambda's differing by 2 was found.
+			} else return(0)
 		}	
 	return(row)	
 }
-##################################################################################################
-###########Deciding concurrence matrix for given v,b,k  through trial and error##############
+#######################################################################
 ccmat=function(v,b,k)
 {
 	x=NULL	
 	lambda=floor(b*k*(k-1)/(v*(v-1)))
 	n2=b*k*(k-1)/2-v*(v-1)*lambda/2
 	n1=v*(v-1)/2-n2	
-	#n1 pairs appear together in lambda blocks and n2 pairs appear together in (lambda+1) blocks
 	r=floor(b*k/v)
 	l2=b*k-v*r 
 	l1=v-l2
-	#There are l1 treatments with replications r and l2 treatments with replications (r+1)
 	n12=r*(k-1)-lambda*(v-1)
 	n11=v-1-n12
 	n22=(r+1)*(k-1)-lambda*(v-1)
@@ -258,7 +234,6 @@ N_to_design=function(N)
 ##################################################################################################
 is.proper=function(N)
 {
-	#function to check whether the design is proper or not
 	v=nrow(N)
 	kvec=t(N)%*%matrix(1,v,1)
 	k=sum(N[,1])
@@ -266,31 +241,10 @@ is.proper=function(N)
 	return(proper)
 }
 ##################################################################################################
-NNPmat=function(N)
+Cmatrix=function(N)
 {
-	#The function returns concurrence matrix of IBD with incidence matrix N
-	mat=N%*%t(N)
-	return(mat)
-}
-##################################################################################################
-Cmat=function(k,NNP)
-{
-	#determines the C matrix of the design
-	v=nrow(NNP)	
-	R=matrix(0,v,v);
-	for (i in 1:v)
-	{
-		R[i,i]=NNP[i,i];
-	}		
-	C=R-NNP/k					
-	return(C)
-}
-##################################################################################################
-C=function(N)
-{
-	#determines the C matrix of the design
 	v=nrow(N)	
-	NNP=NNPmat(N)	
+	NNP=N%*%t(N)	
 	R=matrix(0,v,v);
 	for (i in 1:v)
 	{
@@ -310,41 +264,28 @@ C=function(N)
 	return(C)
 }
 ##################################################################################################
-check.connected=function(k,NNP)
-{
-	v=nrow(NNP)
-	C=Cmat(k,NNP)
-	dt=det(C+matrix(1/v,v,v))
-	dt=round(dt,digits=6)
-	#if ((dt > .00000001 | dt < -0.00000001))  connected=1 else connected=0
-	if (dt!=0)  connected=1 else connected=0
-	return (connected)
-}
-##################################################################################################
-#function to check connectedness of a design
 is.connected=function(N)
 {
 	v=nrow(N)
-	C=C(N)
+	C=Cmatrix(N)
 	dt=det(C+matrix(1/v,v,v))
 	dt=round(dt,digits=6)
-	if (dt!=0)  connected=1 else connected=0  #1 means connected, 0 means disconnected.
+	if (dt!=0)  connected=1 else connected=0 
 	return(connected)
 }
 ##################################################################################################
 A_eff.NNP=function(b,k,NNP)
 {
-	#This function computes A-efficiency from NNP and k
-	v=nrow(NNP)
-	C=Cmat(k,NNP)
+	v=nrow(NNP)		
+	R=diag(diag(NNP))		
+	C=R-NNP/k	
 	dt=det(C+matrix(1/v,v,v))
 	dt=round(dt,digits=6)
-	#if (dt!=0)  connected=1 else connected=0
 	if (dt!=0) 
 	{
 		Eigen_out=eigen(C)
 		eig_values=Eigen_out$values
-		eig_values=round(eig_values, digits=6)  # to consider decimal places upto 6
+		eig_values=round(eig_values, digits=6)
 		sum=0
 		for (i in 1:v)
 		{
@@ -358,12 +299,10 @@ A_eff.NNP=function(b,k,NNP)
 ##################################################################################################
 A_eff=function(N)
 {
-	#The function compute A-efficiency for proper block design, treatments are labelled as 1 ,2, ..., v
-	# for proper block design only where k is the block size
 	if (is.proper(N)==1) k=sum(N[,1]) else stop ("design is not  proper")
 	v=nrow(N)
 	b=ncol(N)	
-	C=C(N)
+	C=Cmatrix(N)
 	Eigen_out=eigen(C)
 	eig_values=Eigen_out$values
 	eig_values=round(eig_values, digits=6)  # to consider decimal places upto 2
@@ -378,19 +317,17 @@ A_eff=function(N)
 ##################################################################################################
 D_eff=function(N)
 {
-	#The function compute A-efficiency for proper block design 
-	# for proper block design only where k is the block size
 	if (is.proper(N)==1) k=sum(N[,1]) else stop ("design is not  proper")
 	v=nrow(N)
 	b=ncol(N)	
-	C=C(N)
+	C=Cmatrix(N)
 	Eigen_out=eigen(C)
 	eig_values=Eigen_out$values
 	eig_values=round(eig_values, digits=6)  # to consider decimal places upto 2
 	product=1
 	for (i in 1:v)
 	{
-		if ((eig_values[i])!=0)  product=product*(1/(eig_values[i]))  #in place of zero eigen values, we have used 0.00000001
+		if ((eig_values[i])!=0)  product=product*(1/(eig_values[i]))
 	}
 	GM=product**(1/(v-1))	
 	LB_Deff=(v-1)/(b*(k-1)*GM)	
@@ -414,9 +351,7 @@ check.validity.NNP=function(NNP,k)
 #################################################################################################
 interchange.NNP=function(b,k,NNP)
 {
-	#This function interchanges two distinct off-diagonal elements of a NNP Matrix and produces the NNP matrix which has highest A-efficiency.
 	Aeff=A_eff.NNP(b,k,NNP)
-	#NNP.final=NNP
 	v=nrow(NNP)
 	i1=1	
 	while (i1<=(v-1))
@@ -436,13 +371,10 @@ interchange.NNP=function(b,k,NNP)
 						if (NNP[i1,j1]!=NNP[i2,j2])
 						{
 							NNP.temp=NNP
-							#The interchange
 							NNP.temp[i1,j1]=NNP[i2,j2]
 							NNP.temp[i2,j2]=NNP[i1,j1]
-							#maintaining symmetry
 							NNP.temp[j1,i1]=NNP.temp[i1,j1]
 							NNP.temp[j2,i2]=NNP.temp[i2,j2]
-							#Change the diagonals
 							NNP.temp[i1,i1]=(sum(NNP.temp[i1,])-NNP[i1,i1])/(k-1)
 							NNP.temp[j1,j1]=(sum(NNP.temp[j1,])-NNP[j1,j1])/(k-1)
 							NNP.temp[i2,i2]=(sum(NNP.temp[i2,])-NNP[i2,i2])/(k-1)
@@ -453,7 +385,6 @@ interchange.NNP=function(b,k,NNP)
 								if (Aeff.temp>Aeff) 
 								{
 									Aeff=Aeff.temp
-									#NNP.final=NNP.temp
 									NNP=NNP.temp
 									i1=0
 									flag=1
@@ -475,8 +406,6 @@ interchange.NNP=function(b,k,NNP)
 ################################################################
 LIP=function(v,b,kvec,NNPo,N1,T,rownum,relaxed)
 {
-	#We are trying to obtain 'rownum'th row of N matrix
-	#LP formulation for use in lpSolve package
 	kvec_obt=t(N1)%*%matrix(1,nrow(N1),1)
 	w=matrix(0,1,b)
 	for (j in 1:b)
@@ -485,24 +414,19 @@ LIP=function(v,b,kvec,NNPo,N1,T,rownum,relaxed)
 		else w[,j]=1/kvec_obt[j,]
 	}		
 	obj=w	#kvec_obt is the kvec obtained till (i-1) step
-	##constraint that sum(x)=number of replication (r)
 	constr1=matrix(1,1,b)		
-	##constraint that block sizes are less than or equal to kj for block j, j=1,2,...,b
 	constr2=matrix(0,b,b)
 	for (j in 1:b)
 	{
 		constr2[j,j]=1	
 	}
-	##constraint that with each of the earlier treatments, concurrences are =lambdaij	
 	constr3=N1 	
-	##constraint that the row to be added is not the one of the rows already deleted, hence sum over j (nij*nij')<r
 	constr4=T
 	constr=rbind(constr1,constr2,constr3,constr4)
 	if (relaxed>0)  
 	{
 		constr=rbind(constr1,constr2,constr4)
 	}
-	##Directions
 	dir1=rep("=", times=(1))	
 	dir2=rep("<=",times=(b))	
 	dim(dir2)=c(b,1)	
@@ -515,7 +439,6 @@ LIP=function(v,b,kvec,NNPo,N1,T,rownum,relaxed)
 	{
 		dir=rbind(dir1,dir2,dir4)
 	}
-	##right side of the constraints
 	rhs1=NNPo[rownum,rownum]
 	rhs2=kvec-kvec_obt 
 	rhs3=matrix(0,nrow(N1),1)
@@ -541,7 +464,6 @@ LIP=function(v,b,kvec,NNPo,N1,T,rownum,relaxed)
 }
 ##################################################################################################
 detect=function(v,b,kvec,NNPo,N1,T,relaxed)
-#deleting rows one by one, If no result then deleting two rows (each possible combinations of two rows), if no result then 3 rows and so on.
 {
 	row_detected=0	
 	result=0
@@ -576,17 +498,24 @@ detect=function(v,b,kvec,NNPo,N1,T,relaxed)
 	return(result)
 }
 ##################################################################################################
-ibdgen=function(v,b,k,NNPo,ntrial,pbar=TRUE)
+ibdgen=function(v,b,k,NNPo,ntrial,pbar)
 {
-	connected=check.connected(k,NNPo)
-	if (connected==1)  # design is connected
+	R=matrix(0,v,v);
+	for (i in 1:v)
+	{
+		R[i,i]=NNPo[i,i];
+	}		
+	C=R-NNPo/k	
+	dt=det(C+matrix(1/v,v,v))
+	dt=round(dt,digits=6)
+	if (dt!=0)  connected=1 else connected=0
+	if (connected==1)
 	{	
 		kvec=matrix(k,b,1)
 		trial=1
 		success=0				
 		while(trial<=ntrial & success==0)
 		{
-			#progress bar variable
 			if (pbar==TRUE) 
 			{
 				if (Sys.info()[[1]]=="Windows") pb = winProgressBar(title = "progress bar", min = 0, max = v, width = 400) else pb=txtProgressBar(min = 0, max = v, style=3)
@@ -609,7 +538,6 @@ ibdgen=function(v,b,k,NNPo,ntrial,pbar=TRUE)
 				N1=LIP(v,b,kvec,NNPo,N1,T,i,relaxed)
 				if (nrow(N1)<i ) 
 				{
-					#detects which row to be deleted
 					temp=detect(v,b,kvec,NNPo,N1,T,relaxed)
 					rows=temp[[1]]
 					if (all(rows>0)) 
@@ -624,10 +552,8 @@ ibdgen=function(v,b,k,NNPo,ntrial,pbar=TRUE)
 				{
 					relaxed=1							
 				} 
-				#if (nrow(N1)==i) relaxed=0
 				Sys.sleep(0.1)
-				#creates progress bar
-	  			if (pbar==TRUE) 
+				if (pbar==TRUE) 
 				{
 					if (Sys.info()[[1]]=="Windows") setWinProgressBar(pb, i,title=paste(round((i-1)*100/v, 0),"% done,","row=",i, ",trial=",trial, ",tabulist=", nt)) else  setTxtProgressBar(pb, i)
 				}
@@ -660,25 +586,20 @@ ibdgen=function(v,b,k,NNPo,ntrial,pbar=TRUE)
 ##################################################################################################
 do.exist.NBIB=function(v,b,k)
 {
-	#function to check whether an NBIB design exists with specified v,b,k or not
 	r=floor(b*k/v)
-	#There are l1 treatments with replications r and l2 treatments with replications (r+1)
 	l1=v-(b*k-v*r)	
 	lambda=floor(r*(k-1)/(v-1))
-	#The treatments which have r replications, they occur with n11 treatments lambda times and occur n12 treatments (lambda+1) times.		
 	n11=v-1-(r*(k-1)-lambda*(v-1))	
 	if (((n11>=(k-1)) & (l1*(n11-l1+1)<=(v-l1)*(n11-k+1))) | ((n11<(k-1)) & ((n11+1)<=l1) & (l1<=(v-k+n11)) & ((n11*l1)%%2==0) & (((v-l1)*(v-k+n11-l1))%%2==0))) exist=1 else exist=0
 	return(exist)
 }
 ##################################################################################################
-ibd=function(v,b,k,ntrial,NNPo,pbar=FALSE)
+ibd=function(v,b,k,NNPo,ntrial=5,pbar=FALSE)
 {
 	stime=proc.time()
 	if (v<0 | k<0 | b<0) stop("v,b,k should be positive.")
 	if (!is.wholenumber(v) | !is.wholenumber(b) | !is.wholenumber(k)) stop("v,b,k should be integers.")
 	if (b*k<v+b-1) stop ("Design parameters do not satisfy conditions for even minimal connectedness.")
-	#if (do.exist.NBIB(v,b,k)==0) stop("Nearly balanced incomplete block design do not exist.")		
-	if (missing(ntrial)) ntrial=5
 	if (!is.wholenumber(ntrial)) stop("ntrial should be integer.")
 	valid=0
 	if (missing(NNPo))
@@ -701,7 +622,7 @@ ibd=function(v,b,k,ntrial,NNPo,pbar=FALSE)
 		if (is.matrix(N))
 		{
 			design=N_to_design(N)
-			conc_mat=NNPmat(N)
+			conc_mat=N%*%t(N)
 			Aeff=A_eff(N)
 			Deff=D_eff(N)
 			t.taken=proc.time()-stime
@@ -715,12 +636,27 @@ ibd=function(v,b,k,ntrial,NNPo,pbar=FALSE)
 	return(result)
 }
 ##################################################################################################
-#######For constructing BTIB designs####################
-library(MASS) #required for ginverse calculation
+bibd=function(v,b,r,k,lambda,ntrial=5,pbar=FALSE)
+{
+	if (v*r==b*k & lambda*(v-1)==r*(k-1))
+	{
+		NNPo=matrix(lambda,v,v)
+		diag(NNPo)=r
+		N=ibdgen(v,b,k,NNPo,ntrial,pbar)
+		if (is.matrix(N))
+		{	
+			NNP=N%*%t(N)
+			design=N_to_design(N)
+			Aeff=A_eff(N)
+			Deff=D_eff(N)
+			result=list(v=v,b=b,r=r,k=k,lambda=lambda,design=design,N=N,NNP=NNP,Aeff=Aeff,Deff=Deff)
+		} else result="design not found"
+	} else result="parameters do not satisfy necessary conditions"
+	return(result)
+}
+##################################################################################################
 design_to_N=function(design)
 {
-	#the function computes the N matrix for given incomplete proper design. 
-	#treatments in the design are  coded as 1 to v.
 	v=max(design)
 	b=nrow(design)
 	k=ncol(design)
@@ -734,6 +670,8 @@ design_to_N=function(design)
 	}
 	return(N)
 }
+##################################################################################################
+library(MASS)
 A_eff_tc=function(N,v1,v2,b,k)
 {
 	kby2=floor(k/2)
@@ -757,7 +695,7 @@ A_eff_tc=function(N,v1,v2,b,k)
 	LB=min
 	rvec=N%*%matrix(1,b,1)		
 	v=v1+v2
-	M=C(N)
+	M=Cmatrix(N)
 	Minv=ginv(M)
 	onev2=matrix(1,v2,1)
 	onev1=matrix(1,v1,1)
@@ -773,17 +711,12 @@ A_eff_tc=function(N,v1,v2,b,k)
 	return(e)			
 }
 #############################################################################
-#function to obtain block design with v treatments with specified NNPo
-NLIP=function(v,b,r,r0,k,lambda,lambda0,NNPo)
+NLIP=function(v,b,k,NNPo)
 {
-	s.time=proc.time()
-	#B contains all possble combinations of k elements. columns of B are the combinations
 	B=combn(v,k) 
-	#order is total number of decision variables
 	order=ncol(B) 	
 	obj=matrix(1,1,order)
 	pairs=combn(v,2)
-	#constraint that (i,j)th pair appear in lambdaij blocks
 	constr1=matrix(0,v*(v-1)/2,order)		
 	for (i in 1:(v*(v-1)/2))
 	{
@@ -792,15 +725,12 @@ NLIP=function(v,b,r,r0,k,lambda,lambda0,NNPo)
 			if (all(is.element(pairs[,i],B[,j]))) constr1[i,j]=1
 		}
 	}
-	#constraint that sum of the number of blocks is b
 	constr2=matrix(1,1,order)
 	constr=rbind(constr1,constr2)
-	##Directions
 	dir1=rep("==", times=(v*(v-1)/2))
 	dim(dir1)=c(v*(v-1)/2,1)
 	dir2="=="		
 	dir=rbind(dir1,dir2)
-	##right hand side of the constraints
 	rhs1=matrix(0,v*(v-1)/2,1)		
 	count=0
 	for (i in 1:(v-1))
@@ -818,54 +748,46 @@ NLIP=function(v,b,r,r0,k,lambda,lambda0,NNPo)
 	if (sol[[28]]==0) 
 	{		
 		cols=which(sol[[12]]>0)
-		design=t(B[,cols])
-		N=design_to_N(design)
-		NNP=NNPmat(N)	
-		Aeff=A_eff_tc(N,(v-1),1,b,k)
-		result=list(v=(v-1),b=b,r=r,r0=r0,k=k,lambda=lambda,lambda0=lambda0,design=design,N=N, NNP=NNP,Aeff=Aeff)	
-		
+		result=t(B[,cols])		
 	} else result="No feasible solution"		
 	return(result)
 }
-####NNPo matrix for BTIB design with v test treatments############################################################
-NNP.btib=function(v,b,r,r0,k,lambda,lambda0)
-{
-	NNP=matrix(0,v+1,v+1)
-	for (i in 1:(v-1))
-	{
-		NNP[i,i]=r
-		for (j in (i+1):v)
-		{
-			NNP[i,j]=lambda
-			NNP[j,i]=lambda		
-		}			
-	}
-	NNP[v,v]=r
-	NNP[v+1,v+1]=r0
-	for (i in 1:v)
-	{
-		NNP[i,v+1]=lambda0
-		NNP[v+1,i]=lambda0
-	}		
-	return(NNP)
-}
 ###############################################################################
-#BTIB through all possible combinations
 btib1=function(v,b,r,r0,k,lambda,lambda0)
 {
-	NNPo=NNP.btib(v,b,r,r0,k,lambda,lambda0)
-	out=NLIP(v+1,b,r,r0,k,lambda,lambda0,NNPo)
+	NNPo=matrix(lambda,v+1,v+1)
+	diag(NNPo)=r
+	NNPo[v+1,v+1]=r0
+	for (i in 1:v)
+	{
+		NNPo[i,v+1]=lambda0
+		NNPo[v+1,i]=lambda0
+	}	
+	design=NLIP(v+1,b,k,NNPo)
+	if (is.matrix(design)) 
+	{
+		N=design_to_N(design)
+		NNP=N%*%t(N)	
+		Aeff=A_eff_tc(N,(v-1),1,b,k)
+		out=list(v=v,b=b,r=r,r0=r0,k=k,lambda=lambda,lambda0=lambda0,design=design,N=N,NNP=NNP,Aeff=Aeff)
+	} else out=design
 	return(out)	
 }
 ###############################################################################
-#BTIB through multistep integer programming
-btib=function(v,b,r,r0,k,lambda,lambda0,ntrial)
+btib=function(v,b,r,r0,k,lambda,lambda0,ntrial=5,pbar=FALSE)
 {
-	NNPo=NNP.btib(v,b,r,r0,k,lambda,lambda0)
-	N=ibdgen((v+1),b,k,NNPo,ntrial)
+	NNPo=matrix(lambda,v+1,v+1)
+	diag(NNPo)=r
+	NNPo[v+1,v+1]=r0
+	for (i in 1:v)
+	{
+		NNPo[i,v+1]=lambda0
+		NNPo[v+1,i]=lambda0
+	}
+	N=ibdgen((v+1),b,k,NNPo,ntrial,pbar)
 	if (is.matrix(N))
 	{	
-		NNP=NNPmat(N)
+		NNP=N%*%t(N)
 		design=N_to_design(N)
 		Aeff=A_eff_tc(N,v,1,b,k)
 		result=list(v=v,b=b,r=r,r0=r0,k=k,lambda=lambda,lambda0=lambda0,design=design,N=N, NNP=NNP,Aeff=Aeff)
@@ -873,16 +795,15 @@ btib=function(v,b,r,r0,k,lambda,lambda0,ntrial)
 	return(result)
 }
 #################################################################################
-#IBD for test vs controls treatment comparisons through multistep integer programming
-ibdtvc=function(v1,v2,b,k,NNPo,ntrial)
+ibdtvc=function(v1,v2,b,k,NNPo,ntrial=5,pbar=FALSE)
 {
 	if (v1<0 |v2<0| k<0 | b<0) stop("v1,v2,b,k should be positive")
 	if (missing (ntrial)) ntrial=5
 	v=v1+v2
-	N=ibdgen(v,b,k,NNPo,ntrial)
+	N=ibdgen(v,b,k,NNPo,ntrial,pbar)
 	if (is.matrix(N))
 	{	
-		NNP=NNPmat(N)
+		NNP=N%*%t(N)
 		design=N_to_design(N)
 		Aeff=A_eff_tc(N,v1,v2,b,k)
 		result=list(v1=v1,v2=v2,b=b,k=k,design=design,N=N, NNP=NNP,Aeff=Aeff)
@@ -892,11 +813,10 @@ ibdtvc=function(v1,v2,b,k,NNPo,ntrial)
 ##################################################################################################
 is.vb=function(N)
 {
-	#function to check whether the design is variance balanced or not
 	v=nrow(N)
 	if(is.connected(N)==1)
 	{
-		C=C(N)
+		C=Cmatrix(N)
 		diag.ele=diag(C)
 		offdiag.ele=NULL
 		for (i in 1:(v-1))
@@ -913,7 +833,6 @@ is.vb=function(N)
 ##################################################################################################
 is.equir=function(N)
 {
-	#function to check whether the design is equireplicate or not
 	b=ncol(N)
 	rvec=N%*%matrix(1,b,1)
 	r=sum(N[1,])
@@ -923,7 +842,6 @@ is.equir=function(N)
 ##################################################################################################
 is.orthogonal=function(N)
 {
-	#function to check whether the design is orthogonal or not
 	v=nrow(N)
 	b=ncol(N)
 	n=v*b
@@ -932,10 +850,9 @@ is.orthogonal=function(N)
 	if (all(N==(rvec%*%t(kvec)/n))) orthogonal=1 else orthogonal=0
 	return(orthogonal)
 }
-##################################################################################################
+###################################################################################################
 check.orthogonality=function(M)
 {
-	#The function checks whether rows of the matrix M are orthogonal or not
 	orthog=1
 	for (i in 1:(nrow(M)-1))
 	{
@@ -944,85 +861,39 @@ check.orthogonality=function(M)
 			if (sum(M[i,]*t(M[j,]))!=0) orthog=0
 		}
 	}
-	return(orthog) #orthog=1 implies the rows are orthogonal.
+	return(orthog)
 			
 }
 ##################################################################################################
-aov.ibd=function(data,contrast)
+library(lsmeans)
+library(car)
+aov.ibd=function(formula,specs,data,contrast,joint=FALSE,details=FALSE,sort=TRUE,by=NULL,alpha = 0.05,Letters="ABCDEFGHIJ",...)
 {
-	#The function gives analysis of variance of data from data of experiments using incomplete block design.
-	#The data set will have treatements, blocks and response variables in first, second and subesequent columns.
-	#The function also perform contrast analysis if contrast is specified.
-	library(MASS)
-	n=nrow(data)
-	v=max(data[,1])
-	b=max(data[,2])
-	D1p=matrix(0,n,v)
-	D2p=matrix(0,n,b)
-	for (i in 1:n)
+	lm.obj=lm(formula,data)
+	ANOVA.table=Anova(lm.obj,type="III")
+	if (details) res=list(lm.obj=lm.obj,ANOVA.table=ANOVA.table) else res=list(ANOVA.table=ANOVA.table)
+	if(!missing(specs))
 	{
-		D1p[i,data[i,1]]=1
-		D2p[i,data[i,2]]=1
-	}
-	N=t(D1p)%*%D2p
-	if (is.connected(N)==0) stop("The design is not connected.")
-	C=C(N)
-	R=t(D1p)%*%D1p
-	K=t(D2p)%*%D2p
-	rvec=diag(R)
-	kvec=diag(K)	
-	omegainv=C+rvec%*%t(rvec)/n
-	omega=solve(omegainv)
-	T=t(D1p)%*%data[,3]
-	B=t(D2p)%*%data[,3]
-	Q=T-N%*%solve(K)%*%B
-	G=sum(B)
-	tot.ss=t(data[,3])%*%data[,3]-G*G/n
-	adj.trt.ss=t(Q)%*%omega%*%Q		
-	blk.ss=sum((B^2)/kvec)-G*G/n
-	res.ss=tot.ss-blk.ss-adj.trt.ss
-	Source=c("Treatments(adj)","Blocks","Error","Total")
-	DF=c(v-1,b-1,n-v-b+1,n-1)
-	SS=c(adj.trt.ss,blk.ss,res.ss,tot.ss)
-	SS=round(SS,digits=3)
-	MS=SS/DF
-	MS=round(MS,digits=3)
-	F=c(round(MS[1]/MS[3],digits=3),"","","")	
-	P.value=c(round(pf(as.numeric(F[1]),(v-1),(n-v-b+1),lower.tail=FALSE),digits=3),"","","")
-	pval=as.numeric(P.value[1])
-	if(pval<=0.001) mark="***" else if (pval<=0.01) mark="**" else if (pval<=0.05) mark="*" else mark=" "
-	Signif=c(mark,"","","")
-	#aov.table=data.frame(Source,DF,SS,MS,F,P.value,Signif)
-	aov.table=data.frame(DF,SS,MS,F,P.value,Signif,row.names=Source)
-	output=aov.table
-	#contrast analyis
-	if (!missing(contrast))
-	{
-		if (class(contrast)=="numeric") dim(contrast)=c(1,v) else {
-									if (check.orthogonality(contrast)==0) 
-									{
-										return(output)
-										stop("The contrasts are not orthogonal.")
-									}
-								      }
-		p=t(contrast)
-		check=t(p)%*%matrix(1,v,1)
-		if (any(check!=0)) 
+		lsmeans.obj=lsmeans(lm.obj,specs,data=data)
+		cld.obj=cld(lsmeans.obj,details,sort,by,alpha,Letters)
+		if (details) res=list(lm.obj=lm.obj,ANOVA.table=ANOVA.table,LSMEANS=cld.obj) else res=list(ANOVA.table=ANOVA.table,LSMEANS=cld.obj)
+		if(!missing(contrast))
 		{
-			return(output)
-			stop("Check your contrast. The sum of coefficients should be zero.")
+			nr=nrow(contrast)
+			contrast.list=vector("list",nr)
+			for (i in 1:nr)
+			{
+				contrast.list[[i]]=contrast[i,]
+				names(contrast.list)[[i]]=rownames(contrast)[i]
+			}
+			contrast.analysis=contrast(lsmeans.obj,contrast.list)
+			if (joint) 
+			{
+				orthogonal=check.orthogonality(contrast)
+				if(orthogonal==1) contrast.analysis=lht(lm.obj,contrast.analysis@linfct) else contrast.analysis="contrasts are not orthogonal. Joint test not possible"
+			} 
+			if (details) res=list(lm.obj=lm.obj,ANOVA.table=ANOVA.table,LSMEANS=cld.obj,contrast.analysis=contrast.analysis) else res=list(ANOVA.table=ANOVA.table,LSMEANS=cld.obj,contrast.analysis=contrast.analysis)
 		}
-		Cinv=ginv(C)
-		contrast.est=round(t(p)%*%Cinv%*%Q,digits=3)
-		sigmsq.est=MS[3]
-		Disp=(t(p)%*%Cinv%*%p)*sigmsq.est
-		F=round(t(contrast.est)%*%solve(Disp)%*%contrast.est/nrow(contrast),digits=3)
-		P.value=round(pf(F,nrow(contrast),(n-v-b+1),lower.tail=FALSE),digits=3)
-		if(P.value<=0.001) mark="***" else if (P.value<=0.01) mark="**" else if (P.value<=0.05) mark="*" else mark=" "
-		Signif=c(mark)
-		Source="Contrast analysis"
-		contrast.table=data.frame(contrast.est,F,P.value,Signif,row.names=Source)
-		output=list(aov.table,contrast.table)
-	}	
-	return(output)	
+	}
+	return(res)
 }

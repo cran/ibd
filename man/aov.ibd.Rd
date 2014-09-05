@@ -1,26 +1,54 @@
 \name{aov.ibd}
 \alias{aov.ibd}
-\title{Analysis of variance of data from a block design}
-\description{This function performs analysis of variance of data from experiments using a block design. Data should be specified with 3 columns, first column should have treatments, second column should have blocks and third column should have response variable. Treatments and blocks should be numbered as 1, 2,... There is also option for estimating and testing a treatment contrast.}
-\usage{aov.ibd(data,contrast)}
+\title{Analysis of variance, least square means and contrast analysis of data from a block design}
+\description{This function performs intrablock analysis of variance of data from experiments using
+ a block design. It also computes least square means of the factor variables (e.g. treatments) 
+and optionally estimates and tests the contrasts of factor variables (e.g treatments). }
+\usage{aov.ibd(formula,specs,data,contrast,joint=FALSE,details=FALSE,sort=TRUE,by=NULL,
+alpha=0.05,Letters = "ABCDEFGHIJ",...)}
 \arguments{
-	\item{data}{data}
-	\item{contrast}{treatment contrast}
-	}
-\value{
-	\item{aov.table}{ANOVA Table}
-	\item{contrast.table}{Estimate and test of significance of the contrast}
-       }
-\references{Dey,A. (1986). Theory of block designs.Wiley Eastern Limited, New Delhi.}
+	\item{formula}{A formula specifying the model of the form response~treatment+block or 
+	response~block+treatment. Make sure the treatment and blocks are factor variables.}
+	\item{specs}{A character vector specifying the names of the factors over which Least 
+square means are desired}
+	\item{data}{A data frame in which the variables specified in the formula will be found.
+ If missing, the variables are searched for in the standard way.}
+	\item{contrast}{A matrix whose rows are contrasts of factors (e.g. treatments)}
+	\item{joint}{If contrast argument has more than one row, then whether a joint test of 
+the contrasts will be performed. Default is FALSE. If joint=TRUE, a check is performed
+ whether the contrasts are pairwise orthogonal or not and then if orthoghonal, joint 
+test is performed.}
+	\item{details}{Logical, if details=TRUE then all objects including lm object from lm(),
+ lsm object from lsmeans() are returned. Default is FALSE.}
+	\item{sort}{Logical value determining whether the least square means are sorted before the
+ comparisons are produced. Default is TRUE.}
+	\item{by}{Character value giving the name or names of variables by which separate families of 
+comparisons are tested. If NULL, all means are compared.}
+	\item{alpha}{Numeric value giving the significance level for the comparisons}
+	\item{Letters}{Characters to be used for compact letter display of groups of factor variables
+ over which least square means are computed. Default is english alphabet capital letters "ABCDEFGHIJ"}
+	\item{...}{Not used}
+} 
+\value{Returns a list with following components
+	\item{lm.obj}{An object of class lm if details=TRUE}
+	\item{ANOVA.table}{ANOVA table from the fitted lm object}
+	\item{LSMEANS}{Least square means with compact letter display}
+	\item{contrast.analysis}{Contrast analysis result if contrast matrix was supplied}
+}
+\details{The function makes use of lm() function in R and Anova() function in car package with 
+specification of Type III sum of squares and lsmeans(), cld(), contrast() functions in lsmeans()
+ package and combines the results in a single place.}
 \examples{
-trt=c(1,2,3,7,9,8,6,4,5,1,7,4,8,5,2,3,6,9,1,8,6,4,2,9,3,5,7,1,9,5,2,6,7,8,3,4)
-blk=c(1,1,1,2,2,2,3,3,3,4,4,4,5,5,5,6,6,6,7,7,7,8,8,8,9,9,9,10,10,10,11,11,11,12,12,12)
-y=c(77,65,75,47,61,60,54,60,65,70,62,62,72,55,55,50,40,60,63,67,54,62,53,57,68,67,66,69,62,52,61,63,79,65,65,38)
-data=data.frame(trt,blk,y)
-contrast=c(1,-1,0,0,0,0,0,0,0)
-aov.ibd(data,contrast)
+data(ibddata)
+aov.ibd(y~factor(trt)+factor(blk),data=ibddata)
+contrast=matrix(c(1,-1,0,0,0,0,0,0,0,0,0,1,-1,0,0,0,0,0),nrow=2,byrow=TRUE)
+aov.ibd(y~factor(trt)+factor(blk),specs="trt",data=ibddata,contrast=contrast)
 }
 \author{B N Mandal <mandal.stat@gmail.com>}
-\keyword{block design}
+\keyword{incomplete block design}
 \keyword{analysis of variance}
-\keyword{treatment contrast}
+\keyword{contrast analysis}
+\keyword{balanced incomplete block design}
+\keyword{Least square means}
+\keyword{LSmeans}
+\keyword{Type III sum of squares}
