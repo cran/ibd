@@ -20,7 +20,7 @@ Treatments}
 \details{
 The experiment used a balanced incomplete block design.
 }
-\references{Dey,A. (1986). Theory of block designs.Wiley Eastern Limited, New Delhi.}
+\references{Dey,A. (1986). Theory of block designs. Wiley Eastern Limited, New Delhi.}
 \examples{
 data(ibddata)
 }

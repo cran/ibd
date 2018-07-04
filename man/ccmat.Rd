@@ -1,7 +1,7 @@
 \name{ccmat}
 \alias{ccmat}
 \title{Concurrence matrix for given v, b and k}
-\description{This function generates the nearly balanced concurrence matrix from given number
+\description{This function generates a nearly balanced concurrence matrix from given number
  of treatments (v), number of blocks (b) and block size (k) by trial and error.}
 \usage{ccmat(v,b,k)}
 \arguments{

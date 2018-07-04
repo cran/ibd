@@ -1,10 +1,10 @@
 \name{N_to_design}
 \alias{N_to_design}
-\title{incidence matrix from given block design}
-\description{This function generates the block contents from a given incidence matrix}
+\title{Treatment by block incidence matrix from given block design}
+\description{This function generates the block contents from a given treatment by block incidence matrix}
 \usage{N_to_design(N)}
 \arguments{
-	\item{N}{incidence matrix}
+	\item{N}{treatment by block incidence matrix}
 	}
 \value{
 	\item{design}{A matrix with number of rows equal to number of blocks and number of columns 

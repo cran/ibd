@@ -1,6 +1,6 @@
 \name{interchange.NNP}
 \alias{interchange.NNP}
-\title{Interchange the elements of a concurrence matrix to get highest possible A-efficiency}
+\title{Interchange the elements of a concurrence matrix to get highest possible lower bound to A-efficiency}
 \description{This function interchanges the distinct off-diagonal elements of a given concurrence
  matrix and produces a concurrence matrix which has highest A-efficiency}
 \usage{interchange.NNP(b,k,NNP)}

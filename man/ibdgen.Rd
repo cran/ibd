@@ -1,6 +1,6 @@
 \name{ibdgen}
 \alias{ibdgen}
-\title{Generate an incidence matrix for given v,b,k, and concurrence matrix}
+\title{Generate a treatment by block incidence matrix for given v,b,k, and concurrence matrix}
 \description{This function generate an incidence matrix for given v,b,k and concurrence matrix}
 \usage{ibdgen(v,b,k,NNPo,ntrial,pbar)}
 \arguments{

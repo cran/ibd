@@ -10,6 +10,6 @@
 	\item{NNPo}{specified concurrence matrix}
 	}
 \value{Returns a design or a text saying that no design found}
-\references{MANDAL, B., GUPTA, V., & PARSAD, R. (2012). Generation of Binary Incomplete Block Design with a Specified Concurrence Matrix. Journal of Statistics & Applications, 7.}
+\references{MANDAL, B. N., GUPTA, V. K., & PARSAD, R. (2012). Generation of Binary Incomplete Block Design with a Specified Concurrence Matrix. Journal of Statistics & Applications, 7.}
 \author{B N Mandal <mandal.stat@gmail.com>}
 \keyword{internal}

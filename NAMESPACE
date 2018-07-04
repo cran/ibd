@@ -1,2 +1,5 @@
-export(N_to_design, design_to_N, Cmatrix, A_eff, D_eff, ibd, bibd, A_eff_tc, btib, ibdtvc, is.proper, is.equir, is.connected, is.vb,is.orthogonal,aov.ibd, is.wholenumber, ccmat_LP, ccmat, A_eff.NNP, check.validity.NNP, interchange.NNP, LIP, ibdgen, do.exist.NBIB, NLIP, btib1, check.orthogonality)
-import(lpSolve, MASS, car, lsmeans,multcompView)
+importFrom("stats", "lm")
+importFrom("utils", "combn")
+importFrom("tcltk","setTkProgressBar","tkProgressBar")
+export(N_to_design, design_to_N, Cmatrix, A_eff, D_eff, ibd, bibd, btib, ibdtvc, is.proper, is.equir, is.connected, is.vb,is.orthogonal,aov.ibd, is.wholenumber, ccmat_LP, ccmat, A_eff.NNP, check.validity.NNP, interchange.NNP, LIP, ibdgen, do.exist.NBIB, NLIP, btib1, check.orthogonality)
+import(lpSolve,MASS,car,emmeans,multcompView)

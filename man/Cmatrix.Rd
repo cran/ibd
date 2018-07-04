@@ -1,11 +1,11 @@
 \name{Cmatrix}
 \alias{Cmatrix}
-\title{Information matrix from given incidence matrix of a block design}
-\description{This function gives the information matrix from a given incidence matrix of a block
+\title{Information matrix from given treatment by block incidence matrix of a block design}
+\description{This function gives the information matrix from a given treatment by block incidence matrix of a block
  design}
 \usage{Cmatrix(N)}
 \arguments{
-	\item{N}{incidence matrix}
+	\item{N}{treatment by block incidence matrix}
 	}
 \value{
 	\item{Cmatrix}{v by v information matrix where v is number of treatments}

@@ -1,5 +1,6 @@
 is.wholenumber=function(x, tol = .Machine$double.eps^0.5)  abs(x - round(x)) < tol
 library(lpSolve)
+library(tcltk)
 ccmat_LP=function(v,b,k)
 {
 	if (v<=k) stop ("v should be greater than k") 
@@ -518,7 +519,7 @@ ibdgen=function(v,b,k,NNPo,ntrial,pbar)
 		{
 			if (pbar==TRUE) 
 			{
-				if (Sys.info()[[1]]=="Windows") pb = winProgressBar(title = "progress bar", min = 0, max = v, width = 400) else pb=txtProgressBar(min = 0, max = v, style=3)
+				pb = tkProgressBar(title = "progress bar", min = 0, max = v, width = 400)
 			}
 			N1=matrix(0,1,b)
 			col=sample(b,(NNPo[1,1]))
@@ -555,7 +556,7 @@ ibdgen=function(v,b,k,NNPo,ntrial,pbar)
 				Sys.sleep(0.1)
 				if (pbar==TRUE) 
 				{
-					if (Sys.info()[[1]]=="Windows") setWinProgressBar(pb, i,title=paste(round((i-1)*100/v, 0),"% done,","row=",i, ",trial=",trial, ",tabulist=", nt)) else  setTxtProgressBar(pb, i)
+				  setTkProgressBar(pb, i,title=paste(round((i-1)*100/v, 0),"% done,","row=",i, ",trial=",trial, ",tabulist=", nt))
 				}
 				i=nrow(N1)+1	
 			}
@@ -865,7 +866,7 @@ check.orthogonality=function(M)
 			
 }
 ##################################################################################################
-library(lsmeans)
+library(emmeans)
 library(car)
 aov.ibd=function(formula,specs,data,contrast,joint=FALSE,details=FALSE,sort=TRUE,by=NULL,alpha = 0.05,Letters="ABCDEFGHIJ",...)
 {
@@ -874,9 +875,9 @@ aov.ibd=function(formula,specs,data,contrast,joint=FALSE,details=FALSE,sort=TRUE
 	if (details) res=list(lm.obj=lm.obj,ANOVA.table=ANOVA.table) else res=list(ANOVA.table=ANOVA.table)
 	if(!missing(specs))
 	{
-		lsmeans.obj=lsmeans(lm.obj,specs,data=data)
-		cld.obj=cld(lsmeans.obj,details,sort,by,alpha,Letters)
-		if (details) res=list(lm.obj=lm.obj,ANOVA.table=ANOVA.table,LSMEANS=cld.obj) else res=list(ANOVA.table=ANOVA.table,LSMEANS=cld.obj)
+		emmeans.obj=emmeans(lm.obj,specs,data=data)
+		cld.obj=cld(emmeans.obj,details,sort,by,alpha,Letters)
+		if (details) res=list(lm.obj=lm.obj,ANOVA.table=ANOVA.table,EMMEANS=cld.obj) else res=list(ANOVA.table=ANOVA.table,EMMEANS=cld.obj)
 		if(!missing(contrast))
 		{
 			nr=nrow(contrast)
@@ -886,13 +887,13 @@ aov.ibd=function(formula,specs,data,contrast,joint=FALSE,details=FALSE,sort=TRUE
 				contrast.list[[i]]=contrast[i,]
 				names(contrast.list)[[i]]=rownames(contrast)[i]
 			}
-			contrast.analysis=contrast(lsmeans.obj,contrast.list)
+			contrast.analysis=contrast(emmeans.obj,contrast.list)
 			if (joint) 
 			{
 				orthogonal=check.orthogonality(contrast)
 				if(orthogonal==1) contrast.analysis=lht(lm.obj,contrast.analysis@linfct) else contrast.analysis="contrasts are not orthogonal. Joint test not possible"
 			} 
-			if (details) res=list(lm.obj=lm.obj,ANOVA.table=ANOVA.table,LSMEANS=cld.obj,contrast.analysis=contrast.analysis) else res=list(ANOVA.table=ANOVA.table,LSMEANS=cld.obj,contrast.analysis=contrast.analysis)
+			if (details) res=list(lm.obj=lm.obj,ANOVA.table=ANOVA.table,EMMEANS=cld.obj,contrast.analysis=contrast.analysis) else res=list(ANOVA.table=ANOVA.table,EMMEANS=cld.obj,contrast.analysis=contrast.analysis)
 		}
 	}
 	return(res)

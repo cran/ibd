@@ -2,15 +2,14 @@
 \alias{aov.ibd}
 \title{Analysis of variance, least square means and contrast analysis of data from a block design}
 \description{This function performs intrablock analysis of variance of data from experiments using
- a block design. It also computes least square means of the factor variables (e.g. treatments) 
+ a block design. It also computes estimated marginal means of the factor variables (e.g. treatments) 
 and optionally estimates and tests the contrasts of factor variables (e.g treatments). }
 \usage{aov.ibd(formula,specs,data,contrast,joint=FALSE,details=FALSE,sort=TRUE,by=NULL,
 alpha=0.05,Letters = "ABCDEFGHIJ",...)}
 \arguments{
 	\item{formula}{A formula specifying the model of the form response~treatment+block or 
 	response~block+treatment. Make sure the treatment and blocks are factor variables.}
-	\item{specs}{A character vector specifying the names of the factors over which Least 
-square means are desired}
+	\item{specs}{A character vector specifying the names of the factors over which estimated marginal means are desired}
 	\item{data}{A data frame in which the variables specified in the formula will be found.
  If missing, the variables are searched for in the standard way.}
 	\item{contrast}{A matrix whose rows are contrasts of factors (e.g. treatments)}
@@ -19,7 +18,7 @@ the contrasts will be performed. Default is FALSE. If joint=TRUE, a check is per
  whether the contrasts are pairwise orthogonal or not and then if orthoghonal, joint 
 test is performed.}
 	\item{details}{Logical, if details=TRUE then all objects including lm object from lm(),
- lsm object from lsmeans() are returned. Default is FALSE.}
+ emmGrid object from emmeans() are returned. Default is FALSE.}
 	\item{sort}{Logical value determining whether the least square means are sorted before the
  comparisons are produced. Default is TRUE.}
 	\item{by}{Character value giving the name or names of variables by which separate families of 
@@ -32,11 +31,11 @@ comparisons are tested. If NULL, all means are compared.}
 \value{Returns a list with following components
 	\item{lm.obj}{An object of class lm if details=TRUE}
 	\item{ANOVA.table}{ANOVA table from the fitted lm object}
-	\item{LSMEANS}{Least square means with compact letter display}
+	\item{EMMEANS}{Estimated marginal means means with compact letter display}
 	\item{contrast.analysis}{Contrast analysis result if contrast matrix was supplied}
 }
 \details{The function makes use of lm() function in R and Anova() function in car package with 
-specification of Type III sum of squares and lsmeans(), cld(), contrast() functions in lsmeans()
+specification of Type III sum of squares and emmeans(), cld(), contrast() functions in emmeans()
  package and combines the results in a single place.}
 \examples{
 data(ibddata)
@@ -49,6 +48,6 @@ aov.ibd(y~factor(trt)+factor(blk),specs="trt",data=ibddata,contrast=contrast)
 \keyword{analysis of variance}
 \keyword{contrast analysis}
 \keyword{balanced incomplete block design}
-\keyword{Least square means}
-\keyword{LSmeans}
+\keyword{Estimated marginal means}
+\keyword{EMMEANS}
 \keyword{Type III sum of squares}
