@@ -23,8 +23,7 @@ with specified parameters and concurrence matrix.}
 	\item{design}{generated block design}
 	\item{N}{treatment by block incidence matrix of the generated block design}
 	\item{NNP}{concurrence matrix of the generated design}
-	\item{Aeff}{A-efficiency of the generated design}
-         }
+	}
 \examples{NNPo=matrix(c(7,3,3,3,3,3,3,3,3,7,3,3,3,3,3,3,3,3,7,3,3,3,3,3,3,3,3,7,3,3,3,3,3,3,3,3,7,
 3,3,3,3,3,3,3,3,7,3,3,3,3,3,3,3,3,9,9,3,3,3,3,3,3,9,9),nrow=8,byrow=TRUE)
 ibdtvc(6,2,15,4,NNPo)
@@ -34,4 +33,3 @@ Specified Concurrence Matrix through Integer Programming, to be submitted for pu
 \author{B N Mandal <mandal.stat@gmail.com>}
 \keyword{incomplete block design}
 \keyword{test vs control(s) comparison}
-\keyword{A-efficiency}
