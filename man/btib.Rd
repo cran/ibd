@@ -36,6 +36,7 @@ Mandal, B. N., Gupta, V. K., & Parsad, R. (2014). Balanced treatment
 incomplete block designs through integer programming, Communications in Statistics - Theory 
 and Methods, 46:8, 3728-3737.
 }
+\note{The function works best for values of number of treatments (v) up to 30 and block size (k) up to 10. However, for block size (k) up to 3, much larger values of number of treatments (v) may be used.}
 \examples{btib(4,6,3,6,3,1,3,10)}
 \author{B N Mandal <mandal.stat@gmail.com>}
 \keyword{incomplete block design}

@@ -1,6 +1,6 @@
-e5d61926e3bb739ca50571175cabce6f *DESCRIPTION
-d6ec79f3e3cb0bbba1c71664245fa51c *NAMESPACE
-946f0325aca0550f68e5c5070657e36e *R/ibd.R
+178a70cd7b5efcb154d2a5051050a08c *DESCRIPTION
+55f765e1723423a12cbcf19e22936780 *NAMESPACE
+0d6bcf7be5f80506d1e9f7f5bcc6fb10 *R/ibd.R
 2c7469099de702f32c9ace26325fcc11 *data/ibddata.rda
 e0983c165321e21e63097e741b92b108 *man/A_eff.NNP.Rd
 aee7c4baaa85756a95fecf2cb321b25a *man/A_eff.Rd
@@ -9,10 +9,10 @@ b8cc5d3d08b0cda86500ff1fe6af46f2 *man/Cmatrix.Rd
 5aea8a786f391b2e7899dc0ebda95572 *man/LIP.Rd
 5b25aee6801596c62cb16cd087b27255 *man/NLIP.Rd
 87424c8b42154f1249b94a2b4cf9070f *man/N_to_Design.Rd
-9a6609669f9c2e2153a58c3530524149 *man/aov.ibd.Rd
-e8d7223efd8c950d4317a9bd87c6a01e *man/bibd.Rd
-b576eb48286a68956bd0aef5ccd77470 *man/btib.Rd
-f9d2987dcf9a1100b1c3d514ce70e5eb *man/btib1.Rd
+fca37b423fba7d7205a00669e8a0111d *man/aov.ibd.Rd
+0ee2c0897210cb2e36548f0412d02a8b *man/bibd.Rd
+04e597fdc6be1168bb9dad12cb204524 *man/btib.Rd
+155767d1e43dc19ce8b3ac2f38be5f1e *man/btib1.Rd
 923574353bddb814982449e8daf283b0 *man/btibgen.Rd
 675f359abea4d9553556c902b11ecee1 *man/ccmat.Rd
 32b8cb2045e827be272be0dedb536132 *man/ccmat_LP.Rd
@@ -22,7 +22,7 @@ a19b2f1be59514b996015e47a885da53 *man/check.validity.NNP.Rd
 2b83140d72c8574b62e0951c1f708e45 *man/do.exist.NBIB.Rd
 648e44320bd7285ecdae150d5bc1523e *man/g.Rd
 1c48c4c07006edc0dcb768a281b7ab53 *man/gts.Rd
-45757b54599e5a7c2ae9285afcdcfcd3 *man/ibd.Rd
+1fe967164de9bb6481d29f60518f7421 *man/ibd.Rd
 b9438d2876f3632380c83dec2462fc74 *man/ibddata.Rd
 74e7f5a264bda7c63bd6bcfa5120fede *man/ibdgen.Rd
 d0fb8d2d7aa8bb91ba2118d2559f3679 *man/ibdtvc.Rd

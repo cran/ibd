@@ -39,6 +39,8 @@ Mandal, B. N., Gupta, V. K., & Parsad, R. (2014). Efficient Incomplete Block Des
 Mandal, B. N. (2015). Linear integer programming approach to construction of balanced incomplete
  block designs. Communications in Statistics-Simulation and Computation, 44:6, 1405-1411.
 }
+
+\note{The function works best for values of number of treatments (v) up to 30 and block size (k) up to 10. However, for block size (k) up to 3, much larger values of number of treatments (v) may be used.}
 \author{B N Mandal <mandal.stat@gmail.com>}
 \keyword{balanced incomplete block design}
 \keyword{incidence matrix}

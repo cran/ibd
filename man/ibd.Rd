@@ -39,6 +39,8 @@ for construction of incomplete block designs. Project report, IASRI, New Delhi.
 Mandal, B. N., Gupta, V. K., & Parsad, R. (2014). Efficient Incomplete Block Designs Through 
 Linear Integer Programming. American Journal of Mathematical and Management Sciences, 33(2),
  110-124.}
+ 
+\note{The function works best for values of number of treatments (v) up to 30 and block size (k) up to 10. However, for block size (k) up to 3, much larger values of number of treatments (v) may be used.}
 \author{B N Mandal <mandal.stat@gmail.com>}
 \keyword{incomplete block design}
 \keyword{incidence matrix}

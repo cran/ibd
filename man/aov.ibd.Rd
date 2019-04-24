@@ -35,8 +35,8 @@ comparisons are tested. If NULL, all means are compared.}
 	\item{contrast.analysis}{Contrast analysis result if contrast matrix was supplied}
 }
 \details{The function makes use of lm() function in R and Anova() function in car package with 
-specification of Type III sum of squares and emmeans(), cld(), contrast() functions in emmeans()
- package and combines the results in a single place.}
+specification of Type III sum of squares and emmeans(), contrast() functions in emmeans()
+ package, cld() function in multcomp package and combines the results in a single place.}
 \examples{
 data(ibddata)
 aov.ibd(y~factor(trt)+factor(blk),data=ibddata)

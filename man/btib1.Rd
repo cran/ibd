@@ -29,9 +29,10 @@
 \references{Mandal, B. N., Gupta, V. K. and Parsad, R. (2013). Application of optimization techniques 
 for construction of incomplete block designs. Project report, IASRI, New Delhi.
 
-MANDAL, B. N., GUPTA, V., & PARSAD, R. (2012). Generation of Binary Incomplete Block Design with
+MANDAL, B. N., GUPTA, V. K. and PARSAD, R. (2012). Generation of Binary Incomplete Block Design with
  a Specified Concurrence Matrix. Journal of Statistics & Applications, 7.
 }
+\note{The function works best for values of number of treatments (v) up to 30 and block size (k) up to 10. However, for block size (k) up to 3, much larger values of number of treatments (v) may be used.}
 \examples{btib(4,6,3,6,3,1,3)}
 \author{B N Mandal <mandal.stat@gmail.com>}
 \keyword{incomplete block design}

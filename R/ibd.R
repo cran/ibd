@@ -23,8 +23,8 @@ gts=function(v,b,k)
 }
 ##################################################################################################
 is.wholenumber=function(x, tol = .Machine$double.eps^0.5)  abs(x - round(x)) < tol
-library(lpSolve)
-library(tcltk)
+#ibrary(lpSolve)
+#library(tcltk)
 ccmat_LP=function(v,b,k)
 {
   if (v<=k) stop ("v should be greater than k") 
@@ -705,7 +705,7 @@ design_to_N=function(design)
   return(N)
 }
 ##################################################################################################
-library(MASS)
+#library(MASS)
 #############################################################################
 NLIP=function(v,b,k,NNPo)
 {
@@ -948,8 +948,9 @@ check.orthogonality=function(M)
   
 }
 ##################################################################################################
-library(emmeans)
-library(car)
+#library(emmeans)
+#library(car)
+#library(multcomp)
 aov.ibd=function(formula,specs,data,contrast,joint=FALSE,details=FALSE,sort=TRUE,by=NULL,alpha = 0.05,Letters="ABCDEFGHIJ",...)
 {
   lm.obj=lm(formula,data)
