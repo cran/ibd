@@ -1,6 +1,6 @@
 \name{A_eff.NNP}
 \alias{A_eff.NNP}
-\title{A-efficiency of a proper binary incomplete block design}
+\title{A-efficiency of A Proper Binary Incomplete Block Design}
 \description{This function computes lower bound to A-efficiency of a binary proper incomplete 
 block design given the block size, number of blocks and concurrence matrix.}
 \usage{A_eff.NNP(b,k,NNP)}
@@ -12,5 +12,5 @@ block design given the block size, number of blocks and concurrence matrix.}
 \value{
 	\item{Aeff}{A-efficiency}
        }
-\author{B N Mandal <mandal.stat@gmail.com>}
+\author{Baidya Nath Mandal <mandal.stat@gmail.com>}
 \keyword{internal}

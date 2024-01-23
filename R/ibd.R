@@ -23,7 +23,7 @@ gts=function(v,b,k)
 }
 ##################################################################################################
 is.wholenumber=function(x, tol = .Machine$double.eps^0.5)  abs(x - round(x)) < tol
-#ibrary(lpSolve)
+#library(lpSolve)
 #library(tcltk)
 ccmat_LP=function(v,b,k)
 {
@@ -267,6 +267,8 @@ N_to_design=function(N)
   return(design)
 }
 ##################################################################################################
+design = function(N) N_to_design(N)
+##################################################################################################
 is.proper=function(N)
 {
   v=nrow(N)
@@ -296,6 +298,8 @@ Cmatrix=function(N)
   }				
   return(C)
 }
+##################################################################################################
+Information.Matrix=function(N) Cmatrix(N)
 ##################################################################################################
 is.connected=function(N)
 {
@@ -704,6 +708,7 @@ design_to_N=function(design)
   }
   return(N)
 }
+N = function(design) design_to_N(design)
 ##################################################################################################
 #library(MASS)
 #############################################################################
@@ -831,8 +836,7 @@ btibgen=function(v,b,k,NNPo,ntrial,pbar)
   }	
   return(result)			
 }
-########################################################################################
-#######################################################################
+###############################################################################
 btib1=function(v,b,r,r0,k,lambda,lambda0)
 {
   NNPo=matrix(lambda,v+1,v+1)
@@ -981,3 +985,11 @@ aov.ibd=function(formula,specs,data,contrast,joint=FALSE,details=FALSE,sort=TRUE
   }
   return(res)
 }
+
+randomize = function(design)
+{
+  design = design[sample(1:nrow(design)),]
+  design = t(apply(design,1,sample))
+  rownames(design) = paste0("Block-",1:nrow(design))      
+  return(design)
+}  

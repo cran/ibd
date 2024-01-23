@@ -1,7 +1,7 @@
 \name{aov.ibd}
 \alias{aov.ibd}
-\title{Analysis of variance, least square means and contrast analysis of data from a block design}
-\description{This function performs intrablock analysis of variance of data from experiments using
+\title{Analysis of Variance, Estimated Marginal Means and Contrast Analysis of Data from An Incomplete Block Design}
+\description{Performs intrablock analysis of variance of data from experiments using
  a block design. It also computes estimated marginal means of the factor variables (e.g. treatments) 
 and optionally estimates and tests the contrasts of factor variables (e.g treatments). }
 \usage{aov.ibd(formula,specs,data,contrast,joint=FALSE,details=FALSE,sort=TRUE,by=NULL,
@@ -43,7 +43,7 @@ aov.ibd(y~factor(trt)+factor(blk),data=ibddata)
 contrast=matrix(c(1,-1,0,0,0,0,0,0,0,0,0,1,-1,0,0,0,0,0),nrow=2,byrow=TRUE)
 aov.ibd(y~factor(trt)+factor(blk),specs="trt",data=ibddata,contrast=contrast)
 }
-\author{B N Mandal <mandal.stat@gmail.com>}
+\author{Baidya Nath Mandal <mandal.stat@gmail.com>}
 \keyword{incomplete block design}
 \keyword{analysis of variance}
 \keyword{contrast analysis}

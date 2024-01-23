@@ -1,7 +1,7 @@
 \name{interchange.NNP}
 \alias{interchange.NNP}
-\title{Interchange the elements of a concurrence matrix to get highest possible lower bound to A-efficiency}
-\description{This function interchanges the distinct off-diagonal elements of a given concurrence
+\title{Interchange the Elements of a Concurrence Matrix to Get Highest Possible Lower Bound to A-efficiency}
+\description{Interchanges the distinct off-diagonal elements of a given concurrence
  matrix and produces a concurrence matrix which has highest A-efficiency}
 \usage{interchange.NNP(b,k,NNP)}
 \arguments{
@@ -12,5 +12,5 @@
 \value{
 	A v x v matrix
        }
-\author{B N Mandal <mandal.stat@gmail.com>}
+\author{Baidya Nath Mandal <mandal.stat@gmail.com>}
 \keyword{internal}

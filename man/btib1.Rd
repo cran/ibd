@@ -1,7 +1,7 @@
 \name{btib1}
 \alias{btib1}
-\title{balanced treatment incomplete block designs}
-\description{This function generates a balanced treatment incomplete block design for specified
+\title{Balanced Treatment Incomplete Block Designs}
+\description{Generates a balanced treatment incomplete block design for specified
  parameters by searching all possible combinations.}
 \usage{btib1(v,b,r,r0,k,lambda,lambda0)}
 \arguments{	
@@ -34,7 +34,7 @@ MANDAL, B. N., GUPTA, V. K. and PARSAD, R. (2012). Generation of Binary Incomple
 }
 \note{The function works best for values of number of treatments (v) up to 30 and block size (k) up to 10. However, for block size (k) up to 3, much larger values of number of treatments (v) may be used.}
 \examples{btib(4,6,3,6,3,1,3)}
-\author{B N Mandal <mandal.stat@gmail.com>}
+\author{Baidya Nath Mandal <mandal.stat@gmail.com>}
 \keyword{incomplete block design}
 \keyword{test vs control(s) comparison}
 \keyword{A-efficiency}

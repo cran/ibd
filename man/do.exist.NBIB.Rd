@@ -1,7 +1,7 @@
 \name{do.exist.NBIB}
 \alias{do.exist.NBIB}
-\title{Existence of a nearly balanced incomplete block design given the parameters}
-\description{This function checks whether a nearly balanced incomplete block design exists or not 
+\title{Existence of A Nearly Balanced Incomplete Block Design Given The Parameters}
+\description{Checks whether a nearly balanced incomplete block design exists or not 
 for given parameters}
 \usage{do.exist.NBIB(v,b,k)}
 \arguments{
@@ -10,5 +10,5 @@ for given parameters}
 	\item{k}{block size}
 	}
 \value{Returns 1 if an NBIB design exists else return 0}
-\author{B N Mandal <mandal.stat@gmail.com>}
+\author{Baidya Nath Mandal <mandal.stat@gmail.com>}
 \keyword{internal}

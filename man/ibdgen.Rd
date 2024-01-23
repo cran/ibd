@@ -1,7 +1,7 @@
 \name{ibdgen}
 \alias{ibdgen}
-\title{Generate a treatment by block incidence matrix for given v,b,k, and concurrence matrix}
-\description{This function generate an incidence matrix for given v,b,k and concurrence matrix}
+\title{Generate a Treatment by Block Incidence Matrix for Given v,b,k, and Concurrence Matrix}
+\description{Generates an incidence matrix for given v,b,k and concurrence matrix}
 \usage{ibdgen(v,b,k,NNPo,ntrial,pbar)}
 \arguments{
 	\item{v}{number of treatments}
@@ -12,5 +12,5 @@
 	\item{pbar}{logical, progress bar to be displayed. Default is FALSE}
 	}
 \value{returns a v by b incidence matrix or a text that design was not found}
-\author{B N Mandal <mandal.stat@gmail.com>}
+\author{Baidya Nath Mandal <mandal.stat@gmail.com>}
 \keyword{internal}

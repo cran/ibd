@@ -2,7 +2,7 @@
 \alias{ibddata}
 \docType{data}
 \title{
-Data from an experiment using incomplete block design
+Data from an Experiment using Incomplete Block Design
 }
 \description{
 Data from an experiment using incomplete block design

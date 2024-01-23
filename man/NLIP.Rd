@@ -1,7 +1,7 @@
 \name{NLIP}
 \alias{NLIP}
-\title{An alternative approach to obtain a block design with specified concurrence matrix}
-\description{This function generates a block design with specified parameters and concurrence matrix through an alternative linear integer programming approach}
+\title{An Alternative Approach to Obtain a Block Design with Specified Concurrence Matrix}
+\description{Generates a block design with specified parameters and concurrence matrix through an alternative linear integer programming approach}
 \usage{NLIP(v,b,k,NNPo)}
 \arguments{
 	\item{v}{number of test treatments}
@@ -10,6 +10,6 @@
 	\item{NNPo}{specified concurrence matrix}
 	}
 \value{Returns a design or a text saying that no design found}
-\references{MANDAL, B. N., GUPTA, V. K., & PARSAD, R. (2012). Generation of Binary Incomplete Block Design with a Specified Concurrence Matrix. Journal of Statistics & Applications, 7.}
-\author{B N Mandal <mandal.stat@gmail.com>}
+\references{Mandal, B. N., Gupta, V. K., & Parsad, R. (2012). Generation of Binary Incomplete Block Design with a Specified Concurrence Matrix. Journal of Statistics & Applications, 7.}
+\author{Baidya Nath Mandal <mandal.stat@gmail.com>}
 \keyword{internal}
